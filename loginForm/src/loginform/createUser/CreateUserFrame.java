@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.util.Calendar;
 import javax.swing.*;
 import loginform.Login;
-import loginform.guestDatabaseConn;
+import loginform.db.guestDatabaseConn;
 /**
  *
  * @author vatsalpatel

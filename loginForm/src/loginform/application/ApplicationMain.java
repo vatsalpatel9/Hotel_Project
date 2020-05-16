@@ -26,7 +26,7 @@ import javax.swing.table.TableCellRenderer;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.PlainDocument;
-import loginform.guestDatabaseConn;
+import loginform.db.guestDatabaseConn;
 import net.proteanit.sql.DbUtils;
 
 /**

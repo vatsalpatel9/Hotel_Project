@@ -5,6 +5,7 @@
  */
 package loginform;
 
+import loginform.db.sqliteConnection;
 import java.awt.Color;
 import java.awt.Toolkit;
 import java.awt.event.*;

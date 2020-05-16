@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package loginform;
+package loginform.db;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -18,7 +18,7 @@ public class guestDatabaseConn {
     public static Connection dbConnection(){
         try{
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:./GuestData.sqlite");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:src/loginform/db/GuestData.sqlite");
            // JOptionPane.showMessageDialog(null, "ConnectionSuccessful!");
             return conn;
             
