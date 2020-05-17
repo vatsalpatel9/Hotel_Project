@@ -6,6 +6,7 @@
 
 package hotelproject;
 
+import hotelproject.app.mainApp;
 import java.sql.Connection;
 import hotelproject.db.loginDatabaseConn;
 import java.awt.Color;
@@ -14,8 +15,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Toolkit;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -31,6 +31,7 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.WindowEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JPasswordField;
@@ -69,7 +70,7 @@ public class appLogin extends JFrame{
         setTitle("Log In");
         setMinimumSize(frameDim);
         setPreferredSize(frameDim);
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         
         
         //Input TextFields Design
@@ -219,6 +220,11 @@ public class appLogin extends JFrame{
                 rs.close();
                 pst.close();
                 JOptionPane.showMessageDialog(null, "Successful");
+                closeFrame();
+                mainApp app = new mainApp();
+                app.setVisible(true);
+                
+            
             }else if (count > 1){
                 JOptionPane.showMessageDialog(null, rs);
             }else{
@@ -227,6 +233,11 @@ public class appLogin extends JFrame{
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
+    }
+    
+    public void closeFrame(){
+        WindowEvent winClosingEvent = new WindowEvent(this, WindowEvent.WINDOW_CLOSING);
+        Toolkit.getDefaultToolkit().getSystemEventQueue().postEvent(winClosingEvent);
     }
     
 }
