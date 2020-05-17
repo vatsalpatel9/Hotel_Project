@@ -14,6 +14,8 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JButton;
@@ -25,9 +27,10 @@ import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JPasswordField;
 
 public class appLogin extends JFrame{
@@ -106,6 +109,10 @@ public class appLogin extends JFrame{
             
         });
         
+        loginBtn.addActionListener((ActionEvent) -> {
+            loginBtnClicked();
+        });
+        
         //LabelIcon Design
         iconPlaceHolder.setBackground(Color.red);
         iconPlaceHolder.setPreferredSize(new Dimension(100,100));
@@ -174,6 +181,36 @@ public class appLogin extends JFrame{
         if(field.getText().equals("Username") || field.getText().equals("Password")){
             field.setText("");
             field.setForeground(Color.BLACK);
+        }
+    }
+    
+    private void loginBtnClicked(){
+        logIn();
+    }
+    
+    private void logIn(){
+        try{
+            String query = "Select * from login where userName=? and password =?";
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, userNameField.getText());
+            pst.setString(2, passwordField.getText());
+            
+            ResultSet rs = pst.executeQuery();
+            int count = 0;
+            while(rs.next()){
+                count++;
+            }
+            if(count == 1){
+                rs.close();
+                pst.close();
+                JOptionPane.showMessageDialog(null, "Successful");
+            }else if (count > 1){
+                JOptionPane.showMessageDialog(null, rs);
+            }else{
+                JOptionPane.showMessageDialog(null, "Username or Password is Incorrect!");
+            }
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
         }
     }
     
