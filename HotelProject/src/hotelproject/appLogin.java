@@ -7,6 +7,7 @@ package hotelproject;
 
 import java.sql.Connection;
 import hotelproject.db.loginDatabaseConn;
+import java.awt.Dimension;
 import javax.swing.JFrame;
 import javax.swing.GroupLayout;
 import javax.swing.WindowConstants;
@@ -32,11 +33,15 @@ public class appLogin extends JFrame{
         //objects
         loginFrame = new JFrame();
         
+        //Frame settings
+        setTitle("Log In");
+        setSize(new Dimension(300, 500));
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        
+        
         //Frame layout
         loginFrameLayout = new GroupLayout(loginFrame.getContentPane());
         loginFrame.getContentPane().setLayout(loginFrameLayout);
-        setTitle("Log In");
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
         pack();
         setVisible(true);
