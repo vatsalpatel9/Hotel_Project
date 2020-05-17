@@ -13,7 +13,7 @@ public class guestDatabaseConn {
     public static Connection dbConnection(){
         try{
             Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src/hotelproject/db/guestDatabaseConn.sqlite");
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:src/hotelproject/db/GuestData.sqlite");
             return conn;
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
