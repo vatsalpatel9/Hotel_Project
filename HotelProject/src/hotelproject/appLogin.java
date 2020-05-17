@@ -29,6 +29,8 @@ import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.JPasswordField;
@@ -109,6 +111,13 @@ public class appLogin extends JFrame{
             
         });
         
+        passwordField.addKeyListener(new KeyAdapter(){
+            @Override
+            public void keyPressed(KeyEvent evt){
+                enterPressed(evt);
+            }
+        });
+        
         loginBtn.addActionListener((ActionEvent) -> {
             loginBtnClicked();
         });
@@ -186,6 +195,12 @@ public class appLogin extends JFrame{
     
     private void loginBtnClicked(){
         logIn();
+    }
+    
+    private void enterPressed(KeyEvent evt){
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER){
+           logIn();
+        }
     }
     
     private void logIn(){
