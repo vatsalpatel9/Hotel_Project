@@ -18,30 +18,43 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import javax.swing.JPasswordField;
 
 public class appLogin extends JFrame{
     Connection conn;
     
     public appLogin(){
         conn = loginDatabaseConn.dbConnection();
+        try{
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        }catch(ClassNotFoundException | InstantiationException |
+                IllegalAccessException | UnsupportedLookAndFeelException e){
+            JOptionPane.showMessageDialog(null, e);
+        }
         initComponents();
     }
     
     //components variable
-    private JTextField  userNameField;
-    private JTextField  passwordField;
-    private JButton     loginBtn;
-    private JLabel      iconPlaceHolder;
+    private JTextField      userNameField;
+    private JPasswordField  passwordField;
+    private JButton         loginBtn;
+    private JLabel          iconPlaceHolder;
     
     //components
     private void initComponents(){
         //objects
         userNameField = new JTextField();
-        passwordField = new JTextField();
+        passwordField = new JPasswordField();
         loginBtn = new JButton();
         iconPlaceHolder = new JLabel("B", SwingConstants.CENTER);
         
@@ -55,12 +68,43 @@ public class appLogin extends JFrame{
         
         
         //Input TextFields Design
+        //userNameField attributes
+        userNameField.setName("userNameField");
         userNameField.setText("Username");
         userNameField.setForeground(new java.awt.Color(153, 153, 153));
         userNameField.setPreferredSize(new Dimension(200, 50));
+        
+        //passwordField attributes
+        passwordField.setName("passwordField");
         passwordField.setText("Password");
         passwordField.setForeground(new java.awt.Color(153, 153, 153));
         passwordField.setPreferredSize(new Dimension(200, 50));
+        
+        //Input listener
+        userNameField.addFocusListener(new FocusListener(){
+            @Override
+            public void focusGained(FocusEvent e) {
+                fieldTextHide(userNameField);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                fieldTextShow(userNameField);
+            } 
+        });
+        
+        passwordField.addFocusListener(new FocusListener(){
+            @Override
+            public void focusGained(FocusEvent e) {
+               fieldTextHide(passwordField);
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                fieldTextShow(passwordField);
+            }
+            
+        });
         
         //LabelIcon Design
         iconPlaceHolder.setBackground(Color.red);
@@ -83,11 +127,11 @@ public class appLogin extends JFrame{
         loginPanel.add(loginBtn, getConstraints(0,3, GridBagConstraints.CENTER));
         
         getContentPane().add(loginPanel);
-       
-
+      
         pack();
         setLocationRelativeTo(null);
         setVisible(true);
+        iconPlaceHolder.requestFocusInWindow();
     }
     
     private GridBagConstraints getLabelConstraints(int x, int y, int anchor) {
@@ -111,4 +155,26 @@ public class appLogin extends JFrame{
         c.anchor = anchor;
         return c;
     }
+    
+    private void fieldTextShow(JTextField field){
+        String name = field.getName();
+        if(field.getText().equals("")){
+            if(name.equals("userNameField")){
+                field.setText("Username");
+                field.setForeground(new Color(153,153,153));
+            }
+            else if (name.equals("passwordField")){
+                field.setText("Password");
+                field.setForeground(new Color(153,153,153));
+            }
+        }
+    }
+    
+    private void fieldTextHide(JTextField field){
+        if(field.getText().equals("Username") || field.getText().equals("Password")){
+            field.setText("");
+            field.setForeground(Color.BLACK);
+        }
+    }
+    
 }
