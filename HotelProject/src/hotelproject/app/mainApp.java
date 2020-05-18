@@ -107,6 +107,7 @@ public class mainApp extends JFrame{
         guestListTable.setRowHeight(25);
         guestListTable.setRowMargin(5);
         guestListTable.setShowGrid(true);
+        guestListTable.setGridColor(Color.BLACK);
         guestListTable.setRowSelectionAllowed(false);
         tableScrollPane.setViewportView(guestListTable);
         
