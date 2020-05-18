@@ -43,26 +43,30 @@ public class mainApp extends JFrame{
         initComponents();
     }
     
-    private JButton homeBtn;
-    private JButton checkInBtn;
-    private JButton checkOutBtn;
-    private JLabel  testedLabel;
-    private JPanel  checkInPanel;
-    private JPanel  checkOutPanel;
+    private JButton     homeBtn;
+    private JButton     checkInBtn;
+    private JButton     checkOutBtn;
+    private JPanel      checkInPanel;
+    private JPanel      checkOutPanel;
     private JScrollPane tableScrollPane;
+    private JTable      guestListTable;
     
     private void initComponents(){
         
         homeBtn = new JButton("Home");
         checkInBtn = new JButton("CheckIn");
         checkOutBtn = new JButton("Checkout");
-        testedLabel = new JLabel("Hello");
         
         //buttons
         Dimension btnDim = new Dimension(190,50);
         homeBtn.setPreferredSize(btnDim);
         checkInBtn.setPreferredSize(btnDim);
         checkOutBtn.setPreferredSize(btnDim);
+        
+        //setButton Names
+        homeBtn.setName("homeBtn");
+        checkInBtn.setName("checkInBtn");
+        checkOutBtn.setName("checkOutBtn");
         
         //Frame setUp
         Dimension frameDim = new Dimension(800, 600);
@@ -85,10 +89,11 @@ public class mainApp extends JFrame{
         btnPanel.add(checkInBtn, getLabelConstraints(0,1, GridBagConstraints.PAGE_START));
         btnPanel.add(checkOutBtn, getLabelConstraints(0,2, GridBagConstraints.PAGE_START));
         
+        Color bgColor = new Color(245,245,245);
         
         //Main Display guestTableScrol
         JLayeredPane mainPanel = new JLayeredPane();
-        mainPanel.setBackground(new Color(245, 245, 245));
+      //  mainPanel.setBackground(bgColor);
         mainPanel.setPreferredSize(new Dimension(600, 600));
         mainPanel.setLayout(new CardLayout());
         
@@ -102,7 +107,7 @@ public class mainApp extends JFrame{
         checkOutPanel = new JPanel();
         
         //homePanelTable
-        JTable guestListTable = new JTable();
+        guestListTable = new JTable();
         popTable(guestListTable);
         guestListTable.setRowHeight(25);
         guestListTable.setRowMargin(5);
@@ -111,14 +116,27 @@ public class mainApp extends JFrame{
         guestListTable.setRowSelectionAllowed(false);
         tableScrollPane.setViewportView(guestListTable);
         
-        //checkInPanel
-        checkInPanel.add(testedLabel);
+        checkInPanel.setBackground(bgColor);
         checkInPanel.setVisible(false);
+        
+        checkOutPanel.setVisible(false);
 
         
         //addPanels to layered Pane
         mainPanel.add(tableScrollPane, "card1");
         mainPanel.add(checkInPanel, "card2");
+        mainPanel.add(checkOutPanel, "card3");
+        
+        //Button Links
+        homeBtn.addActionListener((ActionListner) -> {
+            switchPanel(homeBtn);
+        });
+        checkInBtn.addActionListener((ActionListner) -> {
+            switchPanel(checkInBtn);
+        });
+        checkOutBtn.addActionListener((ActionListner) -> {
+            switchPanel(checkOutBtn);
+        });
 
         //add Panels to main frame
         containerPanel.add(btnPanel, BorderLayout.WEST);
@@ -154,4 +172,27 @@ public class mainApp extends JFrame{
         table.setDefaultEditor(Object.class, null);
     }
     
+    private void switchPanel(JButton btn){
+        String btnName = btn.getName();
+        switch(btnName){
+            case "homeBtn":
+                checkInPanel.setVisible(false);
+                checkOutPanel.setVisible(false);
+                popTable(guestListTable);
+                tableScrollPane.setVisible(true);
+                break;
+            case "checkInBtn":
+                tableScrollPane.setVisible(false);
+                checkOutPanel.setVisible(false);
+                checkInPanel.setVisible(true);
+                break;
+            case "checkOutBtn":
+                checkOutPanel.setVisible(true);
+                tableScrollPane.setVisible(false);
+                checkInPanel.setVisible(false);
+                break;
+            default:
+                break;
+        }
+    }
 }
