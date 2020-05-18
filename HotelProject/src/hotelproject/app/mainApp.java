@@ -8,19 +8,27 @@ package hotelproject.app;
 import java.sql.Connection;
 import hotelproject.db.guestDatabaseConn;
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import net.proteanit.sql.DbUtils;
 
 public class mainApp extends JFrame{
     Connection conn;
@@ -38,12 +46,17 @@ public class mainApp extends JFrame{
     private JButton homeBtn;
     private JButton checkInBtn;
     private JButton checkOutBtn;
+    private JLabel  testedLabel;
+    private JPanel  checkInPanel;
+    private JPanel  checkOutPanel;
+    private JScrollPane tableScrollPane;
     
     private void initComponents(){
         
         homeBtn = new JButton("Home");
         checkInBtn = new JButton("CheckIn");
         checkOutBtn = new JButton("Checkout");
+        testedLabel = new JLabel("Hello");
         
         //buttons
         Dimension btnDim = new Dimension(190,50);
@@ -58,30 +71,58 @@ public class mainApp extends JFrame{
         setPreferredSize(frameDim);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         
-        //Container Panel
+        //Container guestTableScrol
         JPanel containerPanel = new JPanel();
         containerPanel.setLayout(new BorderLayout());
         
-        //Button Panel
+        //Button guestTableScrol
         JPanel btnPanel = new JPanel();
         btnPanel.setBackground(Color.RED);
-        //btnPanel.setPreferredSize(new Dimension(200, 600));
-       // btnPanel.setMinimumSize(new Dimension(200, 600));
-        btnPanel.setSize(200,600);
+        btnPanel.setPreferredSize(new Dimension(200, 600));
+        btnPanel.setMinimumSize(new Dimension(200, 600));
         btnPanel.setLayout(new GridBagLayout());
-        btnPanel.add(homeBtn, getLabelConstraints(0,0, GridBagConstraints.LINE_START));
-        btnPanel.add(checkInBtn, getLabelConstraints(0,1, GridBagConstraints.LINE_START));
-        btnPanel.add(checkOutBtn, getLabelConstraints(0,2, GridBagConstraints.LINE_START));
+        btnPanel.add(homeBtn, getLabelConstraints(0,0, GridBagConstraints.PAGE_START));
+        btnPanel.add(checkInBtn, getLabelConstraints(0,1, GridBagConstraints.PAGE_START));
+        btnPanel.add(checkOutBtn, getLabelConstraints(0,2, GridBagConstraints.PAGE_START));
         
         
-        //Main Display Panel
-        JPanel mainPanel = new JPanel();
-        mainPanel.setBackground(Color.BLUE);
+        //Main Display guestTableScrol
+        JLayeredPane mainPanel = new JLayeredPane();
+        mainPanel.setBackground(new Color(245, 245, 245));
+        mainPanel.setPreferredSize(new Dimension(600, 600));
+        mainPanel.setLayout(new CardLayout());
         
-        //add Panels
+        //LayeredPanel
+        JLayeredPane layerPanel = new JLayeredPane();
+        layerPanel.setLayout(new CardLayout());
+        
+        //Panel for Layered Pane
+        tableScrollPane = new JScrollPane();
+        checkInPanel = new JPanel();
+        checkOutPanel = new JPanel();
+        
+        //homePanelTable
+        JTable guestListTable = new JTable();
+        popTable(guestListTable);
+        guestListTable.setRowHeight(25);
+        guestListTable.setRowMargin(5);
+        guestListTable.setShowGrid(true);
+        guestListTable.setRowSelectionAllowed(false);
+        tableScrollPane.setViewportView(guestListTable);
+        
+        //checkInPanel
+        checkInPanel.add(testedLabel);
+        checkInPanel.setVisible(false);
+
+        
+        //addPanels to layered Pane
+        mainPanel.add(tableScrollPane, "card1");
+        mainPanel.add(checkInPanel, "card2");
+
+        //add Panels to main frame
         containerPanel.add(btnPanel, BorderLayout.WEST);
-        containerPanel.add(mainPanel);
-        getContentPane().add(containerPanel);
+        containerPanel.add(mainPanel, BorderLayout.CENTER);
+        getContentPane().add(containerPanel, BorderLayout.CENTER);
         
         pack();
         setLocationRelativeTo(null);
@@ -98,4 +139,18 @@ public class mainApp extends JFrame{
         c.anchor = anchor;
         return c;
     }
+    
+    private void popTable(JTable table) {
+        table.getTableHeader().setFont(new Font("SansSerif", Font.ITALIC, 18));
+        try {
+            String query = "select FirstName, LastName, ArrivalDate, DepartureDate from guestList";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        table.setDefaultEditor(Object.class, null);
+    }
+    
 }
