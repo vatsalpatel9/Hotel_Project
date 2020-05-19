@@ -67,12 +67,14 @@ public class mainApp extends JFrame{
     private JLabel      stateLabel;
     private JLabel      zipLabel;
     private JLabel      numOfNightsLabel;
+    private JLabel      roomRateLabel;
     private JTextField  fNameField;
     private JTextField  lNameField;
     private JTextField  addressField;
     private JTextField  cityField;
     private JTextField  stateField;
     private JTextField  zipField;
+    private JTextField  roomRateField;
     private JButton     continueBtn;
     private JSpinner    numOfNights;
     
@@ -150,6 +152,7 @@ public class mainApp extends JFrame{
         stateLabel = new JLabel("State");
         zipLabel = new JLabel("Zip Code");
         numOfNightsLabel = new JLabel("Nights");
+        roomRateLabel = new JLabel("Rate");
         
         fNameField = new JTextField();
         lNameField = new JTextField();
@@ -159,6 +162,7 @@ public class mainApp extends JFrame{
         zipField = new JTextField();
         continueBtn = new JButton("Continue");
         numOfNights = new JSpinner();
+        roomRateField = new JTextField();
         
         GroupLayout checkInPanelLayout = new GroupLayout(checkInPanel);
         checkInPanel.setLayout(checkInPanelLayout);
@@ -185,10 +189,14 @@ public class mainApp extends JFrame{
                                 .addGap(49,49,49)
                                 .addGroup(checkInPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                                      .addGroup(checkInPanelLayout.createSequentialGroup()
-                                        .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(roomRateLabel, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(roomRateField, GroupLayout.PREFERRED_SIZE, 74, GroupLayout.PREFERRED_SIZE)
+                                        .addGap(184,184,184)
+                                        .addComponent(numOfNightsLabel)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
-                                        .addGap(0, 0, Short.MAX_VALUE))
+                                        .addGap(45,45,45))
                                      .addGroup(checkInPanelLayout.createSequentialGroup()
                                         .addComponent(cityLabel, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -225,10 +233,13 @@ public class mainApp extends JFrame{
                     .addComponent(zipField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                     .addComponent(cityLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(checkInPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                .addGroup(checkInPanelLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(roomRateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roomRateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                     .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                     .addGroup(checkInPanelLayout.createSequentialGroup()
-                        .addComponent(numOfNights)
                         .addGap(5, 5, 5)))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
                 .addComponent(continueBtn, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
