@@ -10,6 +10,7 @@ import hotelproject.db.guestDatabaseConn;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -18,6 +19,9 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -26,6 +30,7 @@ import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
@@ -36,6 +41,7 @@ import net.proteanit.sql.DbUtils;
 
 public class mainApp extends JFrame{
     Connection conn;
+    private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     public mainApp(){
         conn = guestDatabaseConn.dbConnection();
         try{
@@ -60,6 +66,7 @@ public class mainApp extends JFrame{
     private JLabel      cityLabel;
     private JLabel      stateLabel;
     private JLabel      zipLabel;
+    private JLabel      numOfNightsLabel;
     private JTextField  fNameField;
     private JTextField  lNameField;
     private JTextField  addressField;
@@ -67,6 +74,7 @@ public class mainApp extends JFrame{
     private JTextField  stateField;
     private JTextField  zipField;
     private JButton     continueBtn;
+    private JSpinner    numOfNights;
     
     private void initComponents(){
         
@@ -141,6 +149,7 @@ public class mainApp extends JFrame{
         cityLabel = new JLabel("City");
         stateLabel = new JLabel("State");
         zipLabel = new JLabel("Zip Code");
+        numOfNightsLabel = new JLabel("Nights");
         
         fNameField = new JTextField();
         lNameField = new JTextField();
@@ -149,11 +158,7 @@ public class mainApp extends JFrame{
         stateField = new JTextField();
         zipField = new JTextField();
         continueBtn = new JButton("Continue");
-        
-        continueBtn.setPreferredSize(new Dimension(97,32));
-        
-        Dimension fieldDim = new Dimension(75,15);
-        fNameField.setPreferredSize(fieldDim);
+        numOfNights = new JSpinner();
         
         GroupLayout checkInPanelLayout = new GroupLayout(checkInPanel);
         checkInPanel.setLayout(checkInPanelLayout);
@@ -179,7 +184,12 @@ public class mainApp extends JFrame{
                             .addGroup(checkInPanelLayout.createSequentialGroup()
                                 .addGap(49,49,49)
                                 .addGroup(checkInPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
-                                    .addGroup(checkInPanelLayout.createSequentialGroup()
+                                     .addGroup(checkInPanelLayout.createSequentialGroup()
+                                        .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
+                                        .addGap(0, 0, Short.MAX_VALUE))
+                                     .addGroup(checkInPanelLayout.createSequentialGroup()
                                         .addComponent(cityLabel, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(cityField, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)
@@ -215,6 +225,11 @@ public class mainApp extends JFrame{
                     .addComponent(zipField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                     .addComponent(cityLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
+                .addGroup(checkInPanelLayout.createParallelGroup(GroupLayout.Alignment.LEADING, false)
+                    .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addGroup(checkInPanelLayout.createSequentialGroup()
+                        .addComponent(numOfNights)
+                        .addGap(5, 5, 5)))
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
                 .addComponent(continueBtn, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
                 .addGap(84, 84, 84))
@@ -239,7 +254,10 @@ public class mainApp extends JFrame{
         checkOutBtn.addActionListener((ActionListner) -> {
             switchPanel(checkOutBtn);
         });
-
+        continueBtn.addActionListener((ActionListner) -> {
+            checkInGuest();
+        });
+        
         //add Panels to main frame
         containerPanel.add(btnPanel, BorderLayout.WEST);
         containerPanel.add(mainPanel, BorderLayout.CENTER);
@@ -295,6 +313,60 @@ public class mainApp extends JFrame{
                 break;
             default:
                 break;
+        }
+    }
+        
+    private void checkInGuest(){
+        try{
+            String query = "INSERT INTO 'guestList' (FirstName, LastName, Address, City, State, ZipCode, ArrivalDate, DepartureDate) Values(?,?,?,?,?,?,?,?)";
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, fNameField.getText());
+            pst.setString(2, lNameField.getText());
+            pst.setString(3, addressField.getText());
+            pst.setString(4, cityField.getText());
+            pst.setString(5, stateField.getText());
+            pst.setString(6, zipField.getText());
+            pst.setString(7, getCurrentDate());
+            pst.setString(8, setCheckOutDate((int) numOfNights.getValue()));
+            
+            int n1 = pst.executeUpdate();
+            if(n1 > 0){
+                JOptionPane.showMessageDialog(null, "Success");
+                clearJTextFields(checkInPanel);
+                resetJSpinner(checkInPanel);
+            }
+            
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    private static String getCurrentDate(){
+        Calendar cal = Calendar.getInstance();
+        return sdf.format(cal.getTime());
+    }
+    
+    private static String setCheckOutDate(int date){
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DAY_OF_YEAR, date);
+        return sdf.format(cal.getTime());
+    }
+    
+    private void clearJTextFields(JPanel panel){
+        for(Component control: panel.getComponents()){
+            if(control instanceof JTextField){
+                JTextField ctrl = (JTextField) control;
+                ctrl.setText(null);
+            }
+        }
+    }
+    
+    private void resetJSpinner(JPanel panel){
+        for(Component control: panel.getComponents()){
+            if(control instanceof JSpinner){
+                JSpinner ctrl = (JSpinner) control;
+                ctrl.setValue(0);
+            }
         }
     }
     
