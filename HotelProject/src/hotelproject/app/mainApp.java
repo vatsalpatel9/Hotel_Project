@@ -22,6 +22,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -40,6 +41,7 @@ import javax.swing.LayoutStyle;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.text.MaskFormatter;
 import net.proteanit.sql.DbUtils;
 
@@ -61,9 +63,10 @@ public class mainApp extends JFrame{
     private JButton     checkInBtn;
     private JButton     checkOutBtn;
     private JPanel      checkInPanel;
-    private JPanel      checkOutPanel;
+    private JScrollPane checkOutPanel;
     private JScrollPane tableScrollPane;
     private JTable      guestListTable;
+    private JTable      checkOutTable;
     private JLabel      fNameLabel;
     private JLabel      lNameLabel;
     private JLabel      addressLabel;
@@ -135,7 +138,7 @@ public class mainApp extends JFrame{
         //Panel for Layered Pane
         tableScrollPane = new JScrollPane();
         checkInPanel = new JPanel();
-        checkOutPanel = new JPanel();
+        checkOutPanel = new JScrollPane();
         
         //homePanelTable
         guestListTable = new JTable();
@@ -258,6 +261,33 @@ public class mainApp extends JFrame{
         );     
         
         checkInPanel.setBackground(bgColor);
+        
+        //checkOutPanel
+        checkOutTable = new JTable(){
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
+            {
+                Component c = super.prepareRenderer(renderer, row, column);
+                if (!isRowSelected(row)){
+                    String checkOutDate = checkOutTable.getModel().getValueAt(row, 3).toString();
+                    String currDate = getCurrentDate();
+                    if(checkOutDate.compareTo(currDate) <= 0){
+                        c.setBackground(Color.RED);
+                    }else{
+                         c.setBackground(Color.WHITE);
+                    }
+                    //c.setBackground(row % 2 == 0 ? getBackground() : Color.LIGHT_GRAY);
+                }
+                return c;
+            }
+        };
+        popTable(checkOutTable);
+        checkOutTable.setRowHeight(25);
+        checkOutTable.setRowMargin(5);
+        checkOutTable.setShowGrid(true);
+        checkOutTable.setGridColor(Color.BLACK);
+        checkOutTable.setRowSelectionAllowed(false);
+        checkOutPanel.setViewportView(checkOutTable);
+        
         checkInPanel.setVisible(false);
         checkOutPanel.setVisible(false);
 
