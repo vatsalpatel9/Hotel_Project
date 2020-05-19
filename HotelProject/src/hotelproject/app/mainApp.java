@@ -15,15 +15,18 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
@@ -37,6 +40,7 @@ import javax.swing.LayoutStyle;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
+import javax.swing.text.MaskFormatter;
 import net.proteanit.sql.DbUtils;
 
 public class mainApp extends JFrame{
@@ -74,7 +78,7 @@ public class mainApp extends JFrame{
     private JTextField  cityField;
     private JTextField  stateField;
     private JTextField  zipField;
-    private JTextField  roomRateField;
+    private JFormattedTextField  roomRateField;
     private JButton     continueBtn;
     private JSpinner    numOfNights;
     
@@ -162,7 +166,14 @@ public class mainApp extends JFrame{
         zipField = new JTextField();
         continueBtn = new JButton("Continue");
         numOfNights = new JSpinner();
-        roomRateField = new JTextField();
+        roomRateField = new JFormattedTextField();
+        MaskFormatter moneyMask = null;
+        try {
+            moneyMask = new MaskFormatter("##.##");
+        } catch (ParseException ex) {
+            Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        moneyMask.install(roomRateField);
         
         GroupLayout checkInPanelLayout = new GroupLayout(checkInPanel);
         checkInPanel.setLayout(checkInPanelLayout);
