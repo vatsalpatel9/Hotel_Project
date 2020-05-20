@@ -486,7 +486,7 @@ public class mainApp extends JFrame{
     private void popTable(JTable table) {
         table.getTableHeader().setFont(new Font("SansSerif", Font.ITALIC, 18));
         try {
-            String query = "select FirstName, LastName, ArrivalDate, DepartureDate from guestList";
+            String query = "select GuestId, FirstName, LastName, ArrivalDate, DepartureDate from guestList";
             PreparedStatement pst = conn.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
             table.setModel(DbUtils.resultSetToTableModel(rs));
@@ -567,6 +567,15 @@ public class mainApp extends JFrame{
         }
     }
     
+    private void setTextFieldProperty(JPanel panel){
+        for(Component control: panel.getComponents()){
+            if(control instanceof JTextField){
+                JTextField ctrl = (JTextField) control;
+                ctrl.setEditable(false);
+            }
+        }
+    }
+    
     private void resetJSpinner(JPanel panel){
         for(Component control: panel.getComponents()){
             if(control instanceof JSpinner){
@@ -578,7 +587,40 @@ public class mainApp extends JFrame{
     
     private void viewGuestDetail(){
         tableScrollPane.setVisible(false);
+        setTextFieldProperty(guestDetailPanel);
         guestDetailPanel.setVisible(true);
+        try{
+            int row = guestListTable.getSelectedRow();
+            String tableClick = (guestListTable.getModel().getValueAt(row, 0).toString());
+            String query = "SELECT * FROM 'guestList' WHERE GuestId = '"+tableClick+"'";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if(rs.next()){
+                String add1 = rs.getString(("GuestId").toString());
+                    showGuestIdField.setText(add1);
+                String add2 = rs.getString("FirstName");
+                    showFNameField.setText(add2);
+                String add3 = rs.getString("LastName");
+                    showLNameField.setText(add3);
+                String add4 = rs.getString("Address");
+                    showAddressField.setText(add4);
+                String add5 = rs.getString("City");
+                    showCityField.setText(add5);
+                String add6 = rs.getString("State");
+                    showStateField.setText(add6);
+                String add7 = rs.getString("ZipCode");
+                    showZipField.setText(add7);
+                String add8 = rs.getString(("Rate").toString());
+                    showRateField.setText(add8);
+                String add9 = rs.getString("ArrivalDate");
+                    showAirDateField.setText(add9);
+                String add10 = rs.getString("DepartureDate");
+                    showDepDateField.setText(add10);
+                
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
     }
     
 }
