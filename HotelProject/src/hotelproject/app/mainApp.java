@@ -16,13 +16,14 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
@@ -63,6 +64,7 @@ public class mainApp extends JFrame{
     private JButton     checkInBtn;
     private JButton     checkOutBtn;
     private JPanel      checkInPanel;
+    private JPanel      guestDetailPanel;
     private JScrollPane checkOutPanel;
     private JScrollPane tableScrollPane;
     private JTable      guestListTable;
@@ -75,12 +77,30 @@ public class mainApp extends JFrame{
     private JLabel      zipLabel;
     private JLabel      numOfNightsLabel;
     private JLabel      roomRateLabel;
+    private JLabel      showGuestIdLabel;
+    private JLabel      showFNameLabel;
+    private JLabel      showLNameLabel;
+    private JLabel      showAddressLabel;
+    private JLabel      showCityLabel;
+    private JLabel      showStateLabel;
+    private JLabel      showZipLabel;
+    private JLabel      showAirDateLabel;
+    private JLabel      showDepDateLabel;
     private JTextField  fNameField;
     private JTextField  lNameField;
     private JTextField  addressField;
     private JTextField  cityField;
     private JTextField  stateField;
     private JTextField  zipField;
+    private JTextField  showGuestIdField;
+    private JTextField  showFNameField;
+    private JTextField  showLNameField;
+    private JTextField  showAddressField;
+    private JTextField  showCityField;
+    private JTextField  showStateField;
+    private JTextField  showZipField;
+    private JTextField  showAirDateField;
+    private JTextField  showDepDateField;
     private JFormattedTextField  roomRateField;
     private JButton     continueBtn;
     private JSpinner    numOfNights;
@@ -139,6 +159,7 @@ public class mainApp extends JFrame{
         tableScrollPane = new JScrollPane();
         checkInPanel = new JPanel();
         checkOutPanel = new JScrollPane();
+        guestDetailPanel = new JPanel();
         
         //homePanelTable
         guestListTable = new JTable();
@@ -258,8 +279,7 @@ public class mainApp extends JFrame{
                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 165, Short.MAX_VALUE)
                 .addComponent(continueBtn, GroupLayout.PREFERRED_SIZE, 53, GroupLayout.PREFERRED_SIZE)
                 .addGap(84, 84, 84))
-        );     
-        
+        );       
         checkInPanel.setBackground(bgColor);
         
         //checkOutPanel
@@ -287,14 +307,74 @@ public class mainApp extends JFrame{
         checkOutTable.setGridColor(Color.BLACK);
         checkOutTable.setRowSelectionAllowed(false);
         checkOutPanel.setViewportView(checkOutTable);
+        //END OF THE CHECKOUTPANEL
         
-        checkInPanel.setVisible(false);
-        checkOutPanel.setVisible(false);
+        //START of Guest Detial Panel
+        showGuestIdLabel = new JLabel("Guest ID");
+        showFNameLabel = new JLabel("First Name");
+        showLNameLabel = new JLabel("Last Name");
+        showAddressLabel = new JLabel("Address");
+        showCityLabel = new JLabel("City");
+        showStateLabel = new JLabel("State");
+        showZipLabel = new JLabel("Zip Code");
+        showAirDateLabel = new JLabel("Arrival Date");
+        showDepDateLabel = new JLabel("Departure Date");
+        
+        showGuestIdField = new JTextField();
+        showFNameField = new JTextField();
+        showLNameField = new JTextField();
+        showAddressField = new JTextField();
+        showCityField = new JTextField();
+        showStateField = new JTextField();
+        showZipField = new JTextField();
+        showAirDateField = new JTextField();
+        showDepDateField = new JTextField();
+        
+        guestListTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent evt){
+                viewGuestDetail();
+            }
+        });
+        
+        GroupLayout guestDetailLayout = new GroupLayout(guestDetailPanel);
+        guestDetailPanel.setLayout(guestDetailLayout);
+        guestDetailLayout.setHorizontalGroup(
+            guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                .addGroup(guestDetailLayout.createSequentialGroup()
+                    .addGap(51,51,51)
+                    .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                        .addGroup(guestDetailLayout.createSequentialGroup()
+                            .addComponent(showGuestIdLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(showGuestIdField, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
+                        .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(guestDetailLayout.createSequentialGroup()
+                            .addComponent(showFNameLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                            .addComponent(showFNameField, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)))))
+        );
+        guestDetailLayout.setVerticalGroup(
+            guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                .addGroup(guestDetailLayout.createSequentialGroup()
+                .addGap(28,28,28)
+                .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(showGuestIdLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showGuestIdField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+                .addGap(18,18,18)
+                .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(showFNameLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showFNameField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+        );
+        
+        //END OF GUEST DETAIL PANEL
 
         //addPanels to layered Pane
+        checkInPanel.setVisible(false);
+        checkOutPanel.setVisible(false);
+        guestDetailPanel.setVisible(false);
         mainPanel.add(tableScrollPane, "card1");
         mainPanel.add(checkInPanel, "card2");
         mainPanel.add(checkOutPanel, "card3");
+        mainPanel.add(guestDetailPanel, "card4");
         
         //Button Links
         homeBtn.addActionListener((ActionListner) -> {
@@ -359,9 +439,10 @@ public class mainApp extends JFrame{
                 checkInPanel.setVisible(true);
                 break;
             case "checkOutBtn":
-                checkOutPanel.setVisible(true);
                 tableScrollPane.setVisible(false);
                 checkInPanel.setVisible(false);
+                popTable(checkOutTable);
+                checkOutPanel.setVisible(true);
                 break;
             default:
                 break;
@@ -420,6 +501,11 @@ public class mainApp extends JFrame{
                 ctrl.setValue(0);
             }
         }
+    }
+    
+    private void viewGuestDetail(){
+        tableScrollPane.setVisible(false);
+        guestDetailPanel.setVisible(true);
     }
     
 }
