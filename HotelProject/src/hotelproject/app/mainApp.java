@@ -84,6 +84,7 @@ public class mainApp extends JFrame{
     private JLabel      showCityLabel;
     private JLabel      showStateLabel;
     private JLabel      showZipLabel;
+    private JLabel      showRateLabel;
     private JLabel      showAirDateLabel;
     private JLabel      showDepDateLabel;
     private JTextField  fNameField;
@@ -99,6 +100,7 @@ public class mainApp extends JFrame{
     private JTextField  showCityField;
     private JTextField  showStateField;
     private JTextField  showZipField;
+    private JTextField  showRateField;
     private JTextField  showAirDateField;
     private JTextField  showDepDateField;
     private JFormattedTextField  roomRateField;
@@ -317,6 +319,7 @@ public class mainApp extends JFrame{
         showCityLabel = new JLabel("City");
         showStateLabel = new JLabel("State");
         showZipLabel = new JLabel("Zip Code");
+        showRateLabel = new JLabel("Rate");
         showAirDateLabel = new JLabel("Arrival Date");
         showDepDateLabel = new JLabel("Departure Date");
         
@@ -327,6 +330,7 @@ public class mainApp extends JFrame{
         showCityField = new JTextField();
         showStateField = new JTextField();
         showZipField = new JTextField();
+        showRateField = new JTextField();
         showAirDateField = new JTextField();
         showDepDateField = new JTextField();
         
@@ -346,23 +350,91 @@ public class mainApp extends JFrame{
                     .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                         .addGroup(guestDetailLayout.createSequentialGroup()
                             .addComponent(showGuestIdLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                             .addComponent(showGuestIdField, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
                         .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(guestDetailLayout.createSequentialGroup()
-                            .addComponent(showFNameLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
-                            .addComponent(showFNameField, GroupLayout.PREFERRED_SIZE, 85, GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(showFNameLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showFNameField, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)
+                                .addGap(47,47,47)
+                                .addComponent(showLNameLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showLNameField, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(guestDetailLayout.createSequentialGroup()
+                                 .addComponent(showAddressLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                 .addComponent(showAddressField, GroupLayout.PREFERRED_SIZE, 585, GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(guestDetailLayout.createSequentialGroup()
+                                .addComponent(showCityLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showCityField, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)
+                                .addGap(47,47,47)
+                                .addComponent(showStateLabel)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showStateField, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                                .addGap(47,47,47)
+                                .addComponent(showZipLabel)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showZipField, GroupLayout.PREFERRED_SIZE, 90, GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(guestDetailLayout.createSequentialGroup()
+                                .addComponent(showRateLabel,GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+                                .addGap(165,165,165)
+                                .addComponent(numOfNightsLabel)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(guestDetailLayout.createSequentialGroup()
+                                .addComponent(showAirDateLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showAirDateField, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)
+                                .addGap(47,47,47)
+                                .addComponent(showDepDateLabel)//, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(showDepDateField, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)))))
         );
         guestDetailLayout.setVerticalGroup(
             guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                 .addGroup(guestDetailLayout.createSequentialGroup()
                 .addGap(28,28,28)
                 .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(showGuestIdLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showGuestIdField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(showGuestIdLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showGuestIdField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
                 .addGap(18,18,18)
                 .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-                    .addComponent(showFNameLabel, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showFNameField, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(showFNameLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showFNameField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showLNameLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showLNameField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                .addGap(18,18,18)
+                .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                     .addComponent(showAddressLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                     .addComponent(showAddressField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                .addGap(18,18,18)
+                .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(showCityLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showCityField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showStateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showStateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showZipLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showZipField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                .addGap(18,18,18)
+                .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(showRateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                .addGap(18,18,18)
+                .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(showAirDateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showAirDateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showDepDateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showDepDateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)))
         );
         
         //END OF GUEST DETAIL PANEL
@@ -451,7 +523,7 @@ public class mainApp extends JFrame{
         
     private void checkInGuest(){
         try{
-            String query = "INSERT INTO 'guestList' (FirstName, LastName, Address, City, State, ZipCode, ArrivalDate, DepartureDate) Values(?,?,?,?,?,?,?,?)";
+            String query = "INSERT INTO 'guestList' (FirstName, LastName, Address, City, State, ZipCode, Rate, ArrivalDate, DepartureDate) Values(?,?,?,?,?,?,?,?,?)";
             PreparedStatement pst = conn.prepareStatement(query);
             pst.setString(1, fNameField.getText());
             pst.setString(2, lNameField.getText());
@@ -459,8 +531,9 @@ public class mainApp extends JFrame{
             pst.setString(4, cityField.getText());
             pst.setString(5, stateField.getText());
             pst.setString(6, zipField.getText());
-            pst.setString(7, getCurrentDate());
-            pst.setString(8, setCheckOutDate((int) numOfNights.getValue()));
+            pst.setString(7, roomRateField.getText());
+            pst.setString(8, getCurrentDate());
+            pst.setString(9, setCheckOutDate((int) numOfNights.getValue()));
             
             int n1 = pst.executeUpdate();
             if(n1 > 0){
