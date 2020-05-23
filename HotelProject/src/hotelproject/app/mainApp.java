@@ -25,22 +25,18 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.WindowConstants;
-import javax.swing.table.TableCellRenderer;
 import net.proteanit.sql.DbUtils;
 
 public class mainApp extends JFrame{
@@ -59,15 +55,14 @@ public class mainApp extends JFrame{
         initComponents();
     }
     
-    private checkInPanelApp checkinpanel;
+    private checkInPanelUi checkInPanel;
+    private checkOutPanelUi   checkOutPanel;
     private JButton     homeBtn;
     private JButton     checkInBtn;
     private JButton     checkOutBtn;
     private JPanel      guestDetailPanel;
-    private JScrollPane checkOutPanel;
     private JScrollPane tableScrollPane;
     private JTable      guestListTable;
-    private JTable      checkOutTable;
     private JLabel      showGuestIdLabel;
     private JLabel      showFNameLabel;
     private JLabel      showLNameLabel;
@@ -88,7 +83,6 @@ public class mainApp extends JFrame{
     private JTextField  showRateField;
     private JTextField  showAirDateField;
     private JTextField  showDepDateField;
-    private JComboBox   roomNum;
 
     private void initComponents(){
         
@@ -142,8 +136,10 @@ public class mainApp extends JFrame{
         
         //Panel for Layered Pane
         tableScrollPane = new JScrollPane();
+        checkInPanel = new checkInPanelUi();
+        checkOutPanel = new checkOutPanelUi();
 
-        checkOutPanel = new JScrollPane();
+       // checkOutPanel = new JScrollPane();
         guestDetailPanel = new JPanel();
         
         //homePanelTable
@@ -156,34 +152,7 @@ public class mainApp extends JFrame{
         guestListTable.setRowSelectionAllowed(false);
         tableScrollPane.setViewportView(guestListTable);
         
-        checkinpanel = new checkInPanelApp();
-    
-        //checkOutPanel
-        checkOutTable = new JTable(){
-            public Component prepareRenderer(TableCellRenderer renderer, int row, int column)
-            {
-                Component c = super.prepareRenderer(renderer, row, column);
-                if (!isRowSelected(row)){
-                    String checkOutDate = checkOutTable.getModel().getValueAt(row, 3).toString();
-                    String currDate = getCurrentDate();
-                    if(checkOutDate.compareTo(currDate) <= 0){
-                        c.setBackground(Color.RED);
-                    }else{
-                         c.setBackground(Color.WHITE);
-                    }
-                    //c.setBackground(row % 2 == 0 ? getBackground() : Color.LIGHT_GRAY);
-                }
-                return c;
-            }
-        };
-        popTable(checkOutTable);
-        checkOutTable.setRowHeight(25);
-        checkOutTable.setRowMargin(5);
-        checkOutTable.setShowGrid(true);
-        checkOutTable.setGridColor(Color.BLACK);
-        checkOutTable.setRowSelectionAllowed(false);
-        checkOutPanel.setViewportView(checkOutTable);
-        //END OF THE CHECKOUTPANEL
+
         
         //START of Guest Detial Panel
         showGuestIdLabel = new JLabel("Guest ID");
@@ -314,11 +283,11 @@ public class mainApp extends JFrame{
         //END OF GUEST DETAIL PANEL
 
         //addPanels to layered Pane
-        checkinpanel.setVisible(false);
+        checkInPanel.setVisible(false);
         checkOutPanel.setVisible(false);
         guestDetailPanel.setVisible(false);
         mainPanel.add(tableScrollPane, "card1");
-        mainPanel.add(checkinpanel, "card2");
+        mainPanel.add(checkInPanel, "card2");
         mainPanel.add(checkOutPanel, "card3");
         mainPanel.add(guestDetailPanel, "card4");
         
@@ -353,19 +322,6 @@ public class mainApp extends JFrame{
         c.anchor = anchor;
         return c;
     }
-
-    private void popTable(JTable table) {
-        table.getTableHeader().setFont(new Font("SansSerif", Font.ITALIC, 18));
-        try {
-            String query = "select GuestId, FirstName, LastName, ArrivalDate, DepartureDate from guestList";
-            PreparedStatement pst = conn.prepareStatement(query);
-            ResultSet rs = pst.executeQuery();
-            table.setModel(DbUtils.resultSetToTableModel(rs));
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        table.setDefaultEditor(Object.class, null);
-    }
     
     private void popRoomTable(JTable table) {
         table.getTableHeader().setFont(new Font("SansSerif", Font.ITALIC, 18));
@@ -374,6 +330,8 @@ public class mainApp extends JFrame{
             PreparedStatement pst = conn.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
             table.setModel(DbUtils.resultSetToTableModel(rs));
+            pst.close();
+            rs.close();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, e);
         }
@@ -384,7 +342,7 @@ public class mainApp extends JFrame{
         String btnName = btn.getName();
         switch(btnName){
             case "homeBtn":
-                checkinpanel.setVisible(false);
+                checkInPanel.setVisible(false);
                 checkOutPanel.setVisible(false);
                 popRoomTable(guestListTable);
                 tableScrollPane.setVisible(true);
@@ -392,22 +350,18 @@ public class mainApp extends JFrame{
             case "checkInBtn":
                 tableScrollPane.setVisible(false);
                 checkOutPanel.setVisible(false);
-                checkinpanel.setVisible(true);
+                checkInPanel.setVisible(true);
+                checkInPanel.getUpdateRooms();
                 break;
             case "checkOutBtn":
                 tableScrollPane.setVisible(false);
-                checkinpanel.setVisible(false);
-                popTable(checkOutTable);
+                checkInPanel.setVisible(false);
+                checkOutPanel.updateDepartureTable();
                 checkOutPanel.setVisible(true);
                 break;
             default:
                 break;
         }
-    }
-    
-    private static String getCurrentDate(){
-        Calendar cal = Calendar.getInstance();
-        return sdf.format(cal.getTime());
     }
 
     private void setTextFieldProperty(JPanel panel){
@@ -451,6 +405,8 @@ public class mainApp extends JFrame{
                 String add10 = rs.getString("DepartureDate");
                     showDepDateField.setText(add10);
                 
+                pst.close();
+                rs.close();
             }
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
