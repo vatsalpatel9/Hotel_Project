@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -193,18 +194,28 @@ public class checkInPanelApp extends JPanel{
             String query = "SELECT RoomNum, RoomType, RoomStatus from roomView";
             PreparedStatement pst = conn.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
-            
+            DefaultComboBoxModel model = new DefaultComboBoxModel();
             while(rs.next()){
                 String roomStatus = rs.getString("RoomStatus");
                 if(roomStatus.equals("CLEAN")){
-                    roomNum.addItem(rs.getInt("RoomNum") +" "+ rs.getString("RoomType"));
+                    model.addElement(rs.getInt("RoomNum") +" "+ rs.getString("RoomType"));
+                   // roomNum.addItem(rs.getInt("RoomNum") +" "+ rs.getString("RoomType"));
+                }
+                else if(roomStatus.equals("DIRTY")){
+                    model.removeElement(rs.getInt("RoomNum") +" "+ rs.getString("RoomType"));
+                    //roomNum.removeItem(rs.getInt("RoomNum") +" "+ rs.getString("RoomType"));
                 }
             }
+            roomNum.setModel(model);
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
     }
 
+    public void getUpdateRooms(){
+        displayRoom();
+    }    
+    
     private void checkInGuest(){
         try{
             String query = "INSERT INTO 'guestList' (FirstName, LastName, Address, City, State, ZipCode, Rate, ArrivalDate, DepartureDate) Values(?,?,?,?,?,?,?,?,?)";
@@ -250,10 +261,10 @@ public class checkInPanelApp extends JPanel{
             
             pst.close();
             pstRoom.close();
-            displayRoom();
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
+        displayRoom();
     }
     
     private static String getCurrentDate(){
