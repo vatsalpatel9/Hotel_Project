@@ -18,6 +18,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.beans.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.text.DateFormat;
@@ -28,6 +29,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -87,6 +89,7 @@ public class mainApp extends JFrame{
     private JLabel      showRateLabel;
     private JLabel      showAirDateLabel;
     private JLabel      showDepDateLabel;
+    private JLabel      roomNumLabel;
     private JTextField  fNameField;
     private JTextField  lNameField;
     private JTextField  addressField;
@@ -106,6 +109,7 @@ public class mainApp extends JFrame{
     private JFormattedTextField  roomRateField;
     private JButton     continueBtn;
     private JSpinner    numOfNights;
+    private JComboBox   roomNum;
     
     private void initComponents(){
         
@@ -165,7 +169,7 @@ public class mainApp extends JFrame{
         
         //homePanelTable
         guestListTable = new JTable();
-        popTable(guestListTable);
+        popRoomTable(guestListTable);
         guestListTable.setRowHeight(25);
         guestListTable.setRowMargin(5);
         guestListTable.setShowGrid(true);
@@ -183,6 +187,7 @@ public class mainApp extends JFrame{
         zipLabel = new JLabel("Zip Code");
         numOfNightsLabel = new JLabel("Nights");
         roomRateLabel = new JLabel("Rate");
+        roomNumLabel = new JLabel("Room");
         
         fNameField = new JTextField();
         lNameField = new JTextField();
@@ -192,6 +197,7 @@ public class mainApp extends JFrame{
         zipField = new JTextField();
         continueBtn = new JButton("Continue");
         numOfNights = new JSpinner();
+        roomNum = new JComboBox();
         roomRateField = new JFormattedTextField();
         MaskFormatter moneyMask = null;
         try {
@@ -200,6 +206,7 @@ public class mainApp extends JFrame{
             Logger.getLogger(mainApp.class.getName()).log(Level.SEVERE, null, ex);
         }
         moneyMask.install(roomRateField);
+        displayRoom();
         
         GroupLayout checkInPanelLayout = new GroupLayout(checkInPanel);
         checkInPanel.setLayout(checkInPanelLayout);
@@ -233,7 +240,10 @@ public class mainApp extends JFrame{
                                         .addComponent(numOfNightsLabel)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
                                         .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 67, GroupLayout.PREFERRED_SIZE)
-                                        .addGap(45,45,45))
+                                        .addGap(45,45,45)
+                                        .addComponent(roomNumLabel)
+                                        .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(roomNum, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
                                      .addGroup(checkInPanelLayout.createSequentialGroup()
                                         .addComponent(cityLabel, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -275,6 +285,8 @@ public class mainApp extends JFrame{
                     .addComponent(roomRateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                     .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                     .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roomNumLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(roomNum, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                     .addGroup(checkInPanelLayout.createSequentialGroup()
                         .addGap(5, 5, 5)))
@@ -383,11 +395,11 @@ public class mainApp extends JFrame{
                             .addGroup(guestDetailLayout.createSequentialGroup()
                                 .addComponent(showRateLabel,GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-                                .addGap(165,165,165)
-                                .addComponent(numOfNightsLabel)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)))
+                               // .addGap(165,165,165)
+                               // .addComponent(numOfNightsLabel)
+                               // .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                              //  .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)))
                         .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(guestDetailLayout.createSequentialGroup()
                                 .addComponent(showAirDateLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
@@ -426,9 +438,9 @@ public class mainApp extends JFrame{
                 .addGap(18,18,18)
                 .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(showRateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                   // .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    //.addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
                 .addGap(18,18,18)
                 .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(showAirDateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
@@ -496,13 +508,26 @@ public class mainApp extends JFrame{
         table.setDefaultEditor(Object.class, null);
     }
     
+    private void popRoomTable(JTable table) {
+        table.getTableHeader().setFont(new Font("SansSerif", Font.ITALIC, 18));
+        try {
+            String query = "select RoomNum, RoomType, RoomStatus, GuestID, FirstName, LastName, Departure from roomView";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e);
+        }
+        table.setDefaultEditor(Object.class, null);
+    }
+    
     private void switchPanel(JButton btn){
         String btnName = btn.getName();
         switch(btnName){
             case "homeBtn":
                 checkInPanel.setVisible(false);
                 checkOutPanel.setVisible(false);
-                popTable(guestListTable);
+                popRoomTable(guestListTable);
                 tableScrollPane.setVisible(true);
                 break;
             case "checkInBtn":
@@ -524,7 +549,8 @@ public class mainApp extends JFrame{
     private void checkInGuest(){
         try{
             String query = "INSERT INTO 'guestList' (FirstName, LastName, Address, City, State, ZipCode, Rate, ArrivalDate, DepartureDate) Values(?,?,?,?,?,?,?,?,?)";
-            PreparedStatement pst = conn.prepareStatement(query);
+            PreparedStatement pst;
+            pst = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             pst.setString(1, fNameField.getText());
             pst.setString(2, lNameField.getText());
             pst.setString(3, addressField.getText());
@@ -536,12 +562,53 @@ public class mainApp extends JFrame{
             pst.setString(9, setCheckOutDate((int) numOfNights.getValue()));
             
             int n1 = pst.executeUpdate();
-            if(n1 > 0){
+            ResultSet rs = pst.getGeneratedKeys();
+            int GuestID = 0;
+            if(rs.next()){
+                GuestID = rs.getInt(1);
+            }
+            rs.close();
+            
+            String selRoom = (String) roomNum.getSelectedItem();
+            int room = Integer.parseInt(selRoom.substring(0, 2));
+            
+            String roomQuery = "UPDATE 'roomView' SET RoomRate = ?, GuestID = ?, FirstName = ?, LastName = ?, Arrival = ?, Departure = ?, RoomStatus = 'DIRTY' WHERE RoomNum = '"+room+"'";
+            PreparedStatement pstRoom = conn.prepareStatement(roomQuery);
+            pstRoom.setString(1, roomRateField.getText());
+            pstRoom.setInt(2, GuestID);
+            pstRoom.setString(3, fNameField.getText());
+            pstRoom.setString(4, lNameField.getText());
+            pstRoom.setString(5, getCurrentDate());
+            pstRoom.setString(6, setCheckOutDate((int) numOfNights.getValue()));
+            
+            
+            int n2 = pstRoom.executeUpdate();
+            if(n1 > 0 && n2 > 0){
                 JOptionPane.showMessageDialog(null, "Success");
                 clearJTextFields(checkInPanel);
                 resetJSpinner(checkInPanel);
             }
             
+            pst.close();
+            pstRoom.close();
+            
+        }catch (Exception e){
+            JOptionPane.showMessageDialog(null, e);
+        }
+    }
+    
+    private void displayRoom(){
+        try{
+            String query = "SELECT RoomNum, RoomType, RoomStatus from roomView";
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            
+            while(rs.next()){
+                String roomStatus = rs.getString("RoomStatus");
+                if(roomStatus.equals("CLEAN")){
+                    roomNum.addItem(rs.getInt("RoomNum") +" "+ rs.getString("RoomType"));
+                }
+            }
         }catch (Exception e){
             JOptionPane.showMessageDialog(null, e);
         }
