@@ -44,8 +44,8 @@ public class checkOutPanelUi extends JScrollPane{
                 if (!isRowSelected(row)){
                     String checkOutDate = checkOutTable.getModel().getValueAt(row, 3).toString();
                     String currDate = getCurrentDate();
-                    if(checkOutDate.compareTo(currDate) <= 0){
-                        c.setBackground(Color.RED);
+                    if(checkOutDate.compareTo(currDate) < 0){
+                        c.setForeground(Color.RED);
                     }else{
                          c.setBackground(Color.WHITE);
                     }
