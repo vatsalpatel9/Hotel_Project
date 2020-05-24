@@ -73,6 +73,8 @@ public class mainApp extends JFrame{
     private JLabel      showRateLabel;
     private JLabel      showAirDateLabel;
     private JLabel      showDepDateLabel;
+    private JLabel      showRoomNumLabel;
+    private JTextField  showRoomNumField;
     private JTextField  showGuestIdField;
     private JTextField  showFNameField;
     private JTextField  showLNameField;
@@ -150,9 +152,7 @@ public class mainApp extends JFrame{
         guestListTable.setShowGrid(true);
         guestListTable.setGridColor(Color.BLACK);
         guestListTable.setRowSelectionAllowed(false);
-        tableScrollPane.setViewportView(guestListTable);
-        
-
+        tableScrollPane.setViewportView(guestListTable);   
         
         //START of Guest Detial Panel
         showGuestIdLabel = new JLabel("Guest ID");
@@ -165,6 +165,7 @@ public class mainApp extends JFrame{
         showRateLabel = new JLabel("Rate");
         showAirDateLabel = new JLabel("Arrival Date");
         showDepDateLabel = new JLabel("Departure Date");
+        showRoomNumLabel = new JLabel("Room");
         
         showGuestIdField = new JTextField();
         showFNameField = new JTextField();
@@ -176,6 +177,7 @@ public class mainApp extends JFrame{
         showRateField = new JTextField();
         showAirDateField = new JTextField();
         showDepDateField = new JTextField();
+        showRoomNumField = new JTextField();
         
         guestListTable.addMouseListener(new MouseAdapter() {
             @Override
@@ -194,7 +196,11 @@ public class mainApp extends JFrame{
                         .addGroup(guestDetailLayout.createSequentialGroup()
                             .addComponent(showGuestIdLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
                             .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(showGuestIdField, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
+                            .addComponent(showGuestIdField, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                            .addGap(20,20,20)
+                            .addComponent(showRoomNumLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(showRoomNumField, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE))
                         .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(guestDetailLayout.createSequentialGroup()
                                 .addComponent(showFNameLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
@@ -247,7 +253,9 @@ public class mainApp extends JFrame{
                 .addGap(28,28,28)
                 .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(showGuestIdLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showGuestIdField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(showGuestIdField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showRoomNumLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(showRoomNumField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
                 .addGap(18,18,18)
                 .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(showFNameLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
@@ -379,7 +387,7 @@ public class mainApp extends JFrame{
         guestDetailPanel.setVisible(true);
         try{
             int row = guestListTable.getSelectedRow();
-            String tableClick = (guestListTable.getModel().getValueAt(row, 0).toString());
+            String tableClick = (guestListTable.getModel().getValueAt(row, 3).toString());
             String query = "SELECT * FROM 'guestList' WHERE GuestId = '"+tableClick+"'";
             PreparedStatement pst = conn.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
@@ -404,6 +412,8 @@ public class mainApp extends JFrame{
                     showAirDateField.setText(add9);
                 String add10 = rs.getString("DepartureDate");
                     showDepDateField.setText(add10);
+                String add11 = rs.getString("RoomNum");
+                    showRoomNumField.setText(add11);
                 
                 pst.close();
                 rs.close();
