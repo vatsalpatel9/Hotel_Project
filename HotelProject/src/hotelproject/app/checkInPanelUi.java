@@ -218,7 +218,10 @@ public class checkInPanelUi extends JPanel{
     
     private void checkInGuest(){
         try{
-            String query = "INSERT INTO 'guestList' (FirstName, LastName, Address, City, State, ZipCode, Rate, ArrivalDate, DepartureDate) Values(?,?,?,?,?,?,?,?,?)";
+            String selRoom = (String) roomNum.getSelectedItem();
+            int room = Integer.parseInt(selRoom.substring(0, 2));
+            
+            String query = "INSERT INTO 'guestList' (FirstName, LastName, Address, City, State, ZipCode, Rate, ArrivalDate, DepartureDate, RoomNum) Values(?,?,?,?,?,?,?,?,?,?)";
             PreparedStatement pst;
             pst = conn.prepareStatement(query, PreparedStatement.RETURN_GENERATED_KEYS);
             pst.setString(1, fNameField.getText());
@@ -230,6 +233,7 @@ public class checkInPanelUi extends JPanel{
             pst.setString(7, roomRateField.getText());
             pst.setString(8, getCurrentDate());
             pst.setString(9, setCheckOutDate((int) numOfNights.getValue()));
+            pst.setInt(10,room);
             
             int n1 = pst.executeUpdate();
             ResultSet rs = pst.getGeneratedKeys();
@@ -239,9 +243,6 @@ public class checkInPanelUi extends JPanel{
             }
             rs.close();
             
-            String selRoom = (String) roomNum.getSelectedItem();
-            int room = Integer.parseInt(selRoom.substring(0, 2));
-            
             String roomQuery = "UPDATE 'roomView' SET RoomRate = ?, GuestID = ?, FirstName = ?, LastName = ?, Arrival = ?, Departure = ?, RoomStatus = 'DIRTY' WHERE RoomNum = '"+room+"'";
             PreparedStatement pstRoom = conn.prepareStatement(roomQuery);
             pstRoom.setString(1, roomRateField.getText());
@@ -250,7 +251,6 @@ public class checkInPanelUi extends JPanel{
             pstRoom.setString(4, lNameField.getText());
             pstRoom.setString(5, getCurrentDate());
             pstRoom.setString(6, setCheckOutDate((int) numOfNights.getValue()));
-            
             
             int n2 = pstRoom.executeUpdate();
             if(n1 > 0 && n2 > 0){
