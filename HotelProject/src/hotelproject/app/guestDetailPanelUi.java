@@ -7,9 +7,12 @@ package hotelproject.app;
 import hotelproject.db.guestDatabaseConn;
 import java.sql.Connection;
 import java.awt.Component;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.swing.GroupLayout;
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -50,6 +53,7 @@ public class guestDetailPanelUi extends JPanel{
     private JTextField  showRateField;
     private JTextField  showAirDateField;
     private JTextField  showDepDateField;
+    private JButton     goBackBtn;
     
     private void initComponents(){
         
@@ -79,6 +83,8 @@ public class guestDetailPanelUi extends JPanel{
         showAirDateField = new JTextField();
         showDepDateField = new JTextField();
         showRoomNumField = new JTextField();
+        
+        goBackBtn = new JButton("Go Back <ESC>");
         
         setTextFieldProperty(this);
         
@@ -141,7 +147,10 @@ public class guestDetailPanelUi extends JPanel{
                                 .addGap(47,47,47)
                                 .addComponent(showDepDateLabel)//, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(showDepDateField, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(showDepDateField, GroupLayout.PREFERRED_SIZE, 228, GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
+                            .addGroup(guestDetailLayout.createSequentialGroup()
+                                .addComponent(goBackBtn, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)))))
         );
         guestDetailLayout.setVerticalGroup(
             guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
@@ -181,9 +190,31 @@ public class guestDetailPanelUi extends JPanel{
                     .addComponent(showAirDateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                     .addComponent(showAirDateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
                     .addComponent(showDepDateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showDepDateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(showDepDateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                .addGap(18,18,18)
+                .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
+                    .addComponent(goBackBtn, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)))
         );  
         
+        goBackBtn.addActionListener((ActionListner) -> {
+            goBackCard();
+        });
+        
+        this.addKeyListener(new KeyAdapter(){
+            public void keyPressed(KeyEvent evt){
+                escPressed(evt);
+            }
+        });
+    }
+    
+    private void goBackCard(){
+        this.setVisible(false);
+    }
+    
+    private void escPressed(KeyEvent evt){
+        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+            this.setVisible(false);
+        }
     }
     
     protected void viewGuestDetail(String tableClick){
