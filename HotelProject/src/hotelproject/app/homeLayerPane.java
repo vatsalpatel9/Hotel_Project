@@ -65,11 +65,15 @@ public class homeLayerPane extends JLayeredPane{
     }
     
     protected void viewGuest(){
-        int row = guestListTable.getSelectedRow();
-        String tableClick = (guestListTable.getModel().getValueAt(row, 3).toString());
-        card.show(this, "card2");
-        guestDetailPanel.requestFocusInWindow();
-        guestDetailPanel.viewGuestDetail(tableClick);
+        try{
+            int row = guestListTable.getSelectedRow();
+            String tableClick = (guestListTable.getModel().getValueAt(row, 3).toString());
+            card.show(this, "card2");
+            guestDetailPanel.requestFocusInWindow();
+            guestDetailPanel.viewGuestDetail(tableClick);
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "No Guest Present In The Selected Room");
+        }
     }
     
     protected void popRoomTable() {
