@@ -27,8 +27,7 @@ import net.proteanit.sql.DbUtils;
  */
 public class checkOutPanelUi extends JScrollPane{
     Connection conn;
-    public checkOutPanelUi() {
-        
+    public checkOutPanelUi() {   
         initComponents();
     }
     
