@@ -43,7 +43,6 @@ public class mainApp extends JFrame{
     
     private checkInPanelUi     checkInPanel;
     private checkOutPanelUi    checkOutPanel;
-    private guestDetailPanelUi guestDetailPanel;
     private homeLayerPane      homeLayer;
    
     private JButton     homeBtn;
@@ -106,9 +105,6 @@ public class mainApp extends JFrame{
         checkOutPanel = new checkOutPanelUi();
 
         //addPanels to layered Pane
-        checkInPanel.setVisible(false);
-        checkOutPanel.setVisible(false);
-        guestDetailPanel.setVisible(false);
         mainPanel.add(homeLayer, "card1");
         mainPanel.add(checkInPanel, "card2");
         mainPanel.add(checkOutPanel, "card3");
@@ -145,21 +141,6 @@ public class mainApp extends JFrame{
         return c;
     }
     
- /*   private void popRoomTable(JTable table) {
-        table.getTableHeader().setFont(new Font("SansSerif", Font.ITALIC, 18));
-        try {
-            String query = "select RoomNum, RoomType, RoomStatus, GuestID, FirstName, LastName, Departure from roomView";
-            PreparedStatement pst = conn.prepareStatement(query);
-            ResultSet rs = pst.executeQuery();
-            table.setModel(DbUtils.resultSetToTableModel(rs));
-            pst.close();
-            rs.close();
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, e);
-        }
-        table.setDefaultEditor(Object.class, null);
-    }*/
-    
     private void switchPanel(JButton btn){
         String btnName = btn.getName();
         switch(btnName){
@@ -179,60 +160,4 @@ public class mainApp extends JFrame{
                 break;
         }
     }
-    
-    protected void setVisibleTrue(JPanel panel){
-        panel.setVisible(true);
-    }
-
-/*    private void setTextFieldProperty(JPanel panel){
-        for(Component control: panel.getComponents()){
-            if(control instanceof JTextField){
-                JTextField ctrl = (JTextField) control;
-                ctrl.setEditable(false);
-            }
-        }
-    }
-    
-    private void viewGuestDetail(){
-        tableScrollPane.setVisible(false);
-        setTextFieldProperty(guestDetailPanel);
-        guestDetailPanel.setVisible(true);
-        try{
-            int row = guestListTable.getSelectedRow();
-            String tableClick = (guestListTable.getModel().getValueAt(row, 3).toString());
-            String query = "SELECT * FROM 'guestList' WHERE GuestId = '"+tableClick+"'";
-            PreparedStatement pst = conn.prepareStatement(query);
-            ResultSet rs = pst.executeQuery();
-            if(rs.next()){
-                String add1 = rs.getString(("GuestId").toString());
-                    showGuestIdField.setText(add1);
-                String add2 = rs.getString("FirstName");
-                    showFNameField.setText(add2);
-                String add3 = rs.getString("LastName");
-                    showLNameField.setText(add3);
-                String add4 = rs.getString("Address");
-                    showAddressField.setText(add4);
-                String add5 = rs.getString("City");
-                    showCityField.setText(add5);
-                String add6 = rs.getString("State");
-                    showStateField.setText(add6);
-                String add7 = rs.getString("ZipCode");
-                    showZipField.setText(add7);
-                String add8 = rs.getString(("Rate").toString());
-                    showRateField.setText(add8);
-                String add9 = rs.getString("ArrivalDate");
-                    showAirDateField.setText(add9);
-                String add10 = rs.getString("DepartureDate");
-                    showDepDateField.setText(add10);
-                String add11 = rs.getString("RoomNum");
-                    showRoomNumField.setText(add11);
-                
-                pst.close();
-                rs.close();
-            }
-        }catch(Exception e){
-            JOptionPane.showMessageDialog(null, e);
-        }
-    }
-    */
 }
