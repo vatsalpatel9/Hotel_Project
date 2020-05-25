@@ -201,10 +201,13 @@ public class guestDetailPanelUi extends JPanel{
         });
         
         this.addKeyListener(new KeyAdapter(){
+            @Override
             public void keyPressed(KeyEvent evt){
                 escPressed(evt);
             }
         });
+        
+        this.setFocusable(true);
     }
     
     private void goBackCard(){
@@ -212,7 +215,7 @@ public class guestDetailPanelUi extends JPanel{
     }
     
     private void escPressed(KeyEvent evt){
-        if(evt.getKeyCode() == KeyEvent.VK_ENTER){
+        if(evt.getKeyCode() == KeyEvent.VK_ESCAPE){
             this.setVisible(false);
         }
     }

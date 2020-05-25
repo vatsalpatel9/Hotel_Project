@@ -68,6 +68,7 @@ public class homeLayerPane extends JLayeredPane{
         int row = guestListTable.getSelectedRow();
         String tableClick = (guestListTable.getModel().getValueAt(row, 3).toString());
         card.show(this, "card2");
+        guestDetailPanel.requestFocusInWindow();
         guestDetailPanel.viewGuestDetail(tableClick);
     }
     
