@@ -11,11 +11,19 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.GroupLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.LayoutStyle;
 
@@ -29,6 +37,7 @@ public class guestDetailPanelUi extends JPanel{
         initComponents();
     }
     
+    private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
     Connection conn;
     
     private JLabel      showGuestIdLabel;
@@ -42,6 +51,7 @@ public class guestDetailPanelUi extends JPanel{
     private JLabel      showAirDateLabel;
     private JLabel      showDepDateLabel;
     private JLabel      showRoomNumLabel;
+    private JLabel      numOfNightsLabel;
     private JTextField  showRoomNumField;
     private JTextField  showGuestIdField;
     private JTextField  showFNameField;
@@ -53,7 +63,9 @@ public class guestDetailPanelUi extends JPanel{
     private JTextField  showRateField;
     private JTextField  showAirDateField;
     private JTextField  showDepDateField;
+    private JSpinner    numOfNights;
     private JButton     goBackBtn;
+   
     
     private void initComponents(){
         
@@ -71,6 +83,7 @@ public class guestDetailPanelUi extends JPanel{
         showAirDateLabel = new JLabel("Arrival Date");
         showDepDateLabel = new JLabel("Departure Date");
         showRoomNumLabel = new JLabel("Room");
+        numOfNightsLabel = new JLabel("Nights");
         
         showGuestIdField = new JTextField();
         showFNameField = new JTextField();
@@ -83,6 +96,7 @@ public class guestDetailPanelUi extends JPanel{
         showAirDateField = new JTextField();
         showDepDateField = new JTextField();
         showRoomNumField = new JTextField();
+        numOfNights = new JSpinner();
         
         goBackBtn = new JButton("Go Back <ESC>");
         
@@ -134,11 +148,11 @@ public class guestDetailPanelUi extends JPanel{
                             .addGroup(guestDetailLayout.createSequentialGroup()
                                 .addComponent(showRateLabel,GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)))
-                               // .addGap(165,165,165)
-                               // .addComponent(numOfNightsLabel)
-                               // .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
-                              //  .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+                                .addGap(165,165,165)
+                                .addComponent(numOfNightsLabel)
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)))
                         .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.LEADING)
                             .addGroup(guestDetailLayout.createSequentialGroup()
                                 .addComponent(showAirDateLabel, GroupLayout.PREFERRED_SIZE, 75, GroupLayout.PREFERRED_SIZE)
@@ -182,9 +196,9 @@ public class guestDetailPanelUi extends JPanel{
                 .addGap(18,18,18)
                 .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(showRateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
-                   // .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
-                    //.addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
+                    .addComponent(showRateField, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numOfNightsLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
+                    .addComponent(numOfNights, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE))
                 .addGap(18,18,18)
                 .addGroup(guestDetailLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                     .addComponent(showAirDateLabel, GroupLayout.PREFERRED_SIZE, 40, GroupLayout.PREFERRED_SIZE)
@@ -226,7 +240,7 @@ public class guestDetailPanelUi extends JPanel{
             PreparedStatement pst = conn.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
             if(rs.next()){
-                String add1 = rs.getString(("GuestId").toString());
+                String add1 = rs.getString("GuestId");
                     showGuestIdField.setText(add1);
                 String add2 = rs.getString("FirstName");
                     showFNameField.setText(add2);
@@ -240,20 +254,27 @@ public class guestDetailPanelUi extends JPanel{
                     showStateField.setText(add6);
                 String add7 = rs.getString("ZipCode");
                     showZipField.setText(add7);
-                String add8 = rs.getString(("Rate").toString());
+                String add8 = rs.getString("Rate");
                     showRateField.setText(add8);
-                String add9 = rs.getString("ArrivalDate");
-                    showAirDateField.setText(add9);
-                String add10 = rs.getString("DepartureDate");
-                    showDepDateField.setText(add10);
+                String arrivalDate = rs.getString("ArrivalDate");
+                    showAirDateField.setText(arrivalDate);
+                String DeparDate = rs.getString("DepartureDate");
+                    showDepDateField.setText(DeparDate);
                 String add11 = rs.getString("RoomNum");
                     showRoomNumField.setText(add11);
-  
+                
+                Date depDate = sdf.parse(DeparDate);
+                Date airDate = sdf.parse(arrivalDate);
+                int diff = depDate.getDate() - airDate.getDate();
+                numOfNights.setValue(diff);
+                    
                 pst.close();
                 rs.close();
             }
-        }catch(Exception e){
+        }catch(SQLException e){
             JOptionPane.showMessageDialog(null, e);
+        } catch (ParseException ex) {
+            Logger.getLogger(guestDetailPanelUi.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
