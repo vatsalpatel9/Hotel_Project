@@ -41,12 +41,12 @@ public class checkOutPanelUi extends JScrollPane{
             {
                 Component c = super.prepareRenderer(renderer, row, column);
                 if (!isRowSelected(row)){
-                    String checkOutDate = checkOutTable.getModel().getValueAt(row, 3).toString();
+                    String checkOutDate = checkOutTable.getModel().getValueAt(row, 4).toString();
                     String currDate = getCurrentDate();
-                    if(checkOutDate.compareTo(currDate) < 0){
+                    if(checkOutDate.compareTo(currDate) <= 0){
                         c.setForeground(Color.RED);
                     }else{
-                         c.setBackground(Color.WHITE);
+                         c.setForeground(Color.BLACK);
                     }
                     //c.setBackground(row % 2 == 0 ? getBackground() : Color.LIGHT_GRAY);
                 }
