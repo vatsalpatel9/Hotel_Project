@@ -12,8 +12,8 @@ public class guestDatabaseConn {
     Connection conn = null;
     public static Connection dbConnection(){
         try{
-            Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src/hotelproject/db/GuestData.sqlite");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://10.20.11.124:1433;databaseName=GuestData;user=sa;password=9299");
             return conn;
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);

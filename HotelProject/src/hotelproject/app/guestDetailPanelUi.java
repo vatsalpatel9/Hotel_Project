@@ -236,7 +236,7 @@ public class guestDetailPanelUi extends JPanel{
     
     protected void viewGuestDetail(String tableClick){
         try{
-            String query = "SELECT * FROM 'guestList' WHERE GuestId = '"+tableClick+"'";
+            String query = "SELECT * FROM 'guestList' WHERE GuestId = '"+tableClick+"' ";
             PreparedStatement pst = conn.prepareStatement(query);
             ResultSet rs = pst.executeQuery();
             if(rs.next()){

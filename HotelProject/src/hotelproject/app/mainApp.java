@@ -44,6 +44,7 @@ public class mainApp extends JFrame{
     private checkInPanelUi     checkInPanel;
     private checkOutPanelUi    checkOutPanel;
     private homeLayerPane      homeLayer;
+    private paymentUi          paymentPanel;
    
     private JButton     homeBtn;
     private JButton     checkInBtn;
@@ -103,11 +104,13 @@ public class mainApp extends JFrame{
         homeLayer = new homeLayerPane();
         checkInPanel = new checkInPanelUi();
         checkOutPanel = new checkOutPanelUi();
+        paymentPanel = new paymentUi();
 
         //addPanels to layered Pane
         mainPanel.add(homeLayer, "card1");
         mainPanel.add(checkInPanel, "card2");
         mainPanel.add(checkOutPanel, "card3");
+        mainPanel.add(paymentPanel, "card4");
         
         //Button Links
         homeBtn.addActionListener((ActionListner) -> {

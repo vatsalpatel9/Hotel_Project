@@ -1,22 +1,31 @@
 package hotelproject.db;
 
+import java.awt.HeadlessException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Scanner;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author vatsalpatel
  */
-public class loginDatabaseConn {
+public class loginDatabaseConn{
     Connection conn;
     public static Connection dbConnection(){
+        Scanner input = new Scanner(System.in);
+        System.out.print("Username: ");
+        String userName = input.next();
+
+        System.out.print("Password: ");
+        String passWord = input.next();
         try{
-            Class.forName("org.sqlite.JDBC");
-            Connection conn = DriverManager.getConnection("jdbc:sqlite:src/hotelproject/db/loginFormDb.sqlite");
+            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://10.20.11.124:1433;databaseName=LogInData;user=" + userName + ";password=" + passWord);
             JOptionPane.showMessageDialog(null, "Connection Successful");
             return conn;
-        }catch(Exception e){
+        }catch(HeadlessException | ClassNotFoundException | SQLException e){
             JOptionPane.showMessageDialog(null, e);
             return null;
         }
