@@ -22,7 +22,7 @@ public class loginDatabaseConn{
         String passWord = input.next();
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://10.20.11.124:3306/hotellogindb",userName,passWord);
+            Connection conn = DriverManager.getConnection("jdbc:mysql://10.20.11.124:3306/hotellogindb",userName,passWord);
             JOptionPane.showMessageDialog(null, "Connection Successful");
             return conn;
         }catch(HeadlessException | ClassNotFoundException | SQLException e){

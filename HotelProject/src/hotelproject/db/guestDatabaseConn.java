@@ -13,7 +13,7 @@ public class guestDatabaseConn {
     public static Connection dbConnection(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://10.20.11.124:3306/hoteldb","root","SqlAdmin");
+            Connection conn = DriverManager.getConnection("jdbc:mysql://10.20.11.124:3306/hoteldb","root","SqlAdmin");
             return conn;
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
