@@ -21,8 +21,8 @@ public class loginDatabaseConn{
         System.out.print("Password: ");
         String passWord = input.next();
         try{
-            Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-            Connection conn = DriverManager.getConnection("jdbc:sqlserver://10.20.11.124:1433;databaseName=LogInData;user=" + userName + ";password=" + passWord);
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection conn = DriverManager.getConnection("jdbc:sqlserver://10.20.11.124:3306/hotellogindb",userName,passWord);
             JOptionPane.showMessageDialog(null, "Connection Successful");
             return conn;
         }catch(HeadlessException | ClassNotFoundException | SQLException e){
