@@ -8,12 +8,12 @@ import javax.swing.JOptionPane;
  *
  * @author vatsalpatel
  */
-public class guestDatabaseConn {
+public class guestDatabaseConn implements credential{
     Connection conn = null;
     public static Connection dbConnection(){
         try{
             Class.forName("com.mysql.jdbc.Driver");
-            Connection conn = DriverManager.getConnection("jdbc:mysql://10.20.11.124:3306/hoteldb","root","SqlAdmin");
+            Connection conn = DriverManager.getConnection(credential.DbLink,credential.DbUser,credential.DbPass);
             return conn;
         }catch(Exception e){
             JOptionPane.showMessageDialog(null, e);
